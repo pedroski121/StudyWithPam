@@ -1,0 +1,164 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,700;1,500&display=swap");
+
+body {
+  overflow-x: hidden;
+}
+
+/* NAVBAR */
+
+/* -------------------navbar background ------------------- */
+.navbar {
+  background-color: transparent;
+}
+/* ------------------hamburger icon ---------------- */
+
+.navbar-toggler {
+  width: 47px;
+  height: 34px;
+  background-color: #bbc1cc;
+  border: none;
+}
+.navbar-toggler .line {
+  width: 100%;
+  float: left;
+  height: 2px;
+  background-color: #000;
+  margin-bottom: 5px;
+}
+.navbar-toggler:active,
+.navbar-toggler:focus {
+  outline: 0;
+  border: none;
+  cursor: pointer;
+}
+
+/* ----------------navbar company name ------------------- */
+
+.navbar-brand {
+  color: gray;
+  padding-left: 40px;
+}
+.navbar-brand:hover,
+.navbar-brand:active,
+.navbar-brand:focus {
+  color: #1e1ee9e7;
+  cursor: pointer;
+}
+
+/*-------------------Navbar Links ----------------------*/
+.nav-link {
+  color: gray;
+}
+.navbar-nav {
+  padding-right: 45px;
+}
+
+.nav-link:hover,
+.nav-link:active,
+.nav-link:focus {
+  color: #1e1ee9e7;
+  cursor: pointer;
+}
+
+/* JUMBOTRON */
+
+/* Jumbotron Header */
+
+.jumbo {
+  font-family: "Roboto", sans-serif;
+  background-image: linear-gradient(#fff, #678cb9);
+  min-height: 300px;
+}
+#jumbo_para {
+  color: #777a85;
+}
+
+/* Email News Alert  */
+
+.jumboENA {
+  display: flex;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+  width: 72%;
+  height: 180px;
+  box-sizing: border-box;
+  padding: 10px 10px 10px 10px;
+  background-color: #f8f9fc;
+}
+.jumboENA .text {
+  text-align: start;
+  padding-top: 1.1rem;
+}
+
+/* NEWS ALERT FORM */
+
+.formdiv {
+  display: flex;
+  justify-content: center;
+}
+.formdiv form {
+  display: flex;
+  align-self: center;
+}
+
+.btn {
+  background-color: #678cb9;
+  color: white;
+  font-family: "Roboto", sans-serif;
+  margin-left: 5px;
+}
+.btn:hover {
+  color: white;
+  background-color: #255085;
+}
+
+/* FEATURED */
+.identification {
+  font-size: 11px;
+  margin-bottom: 10px;
+  color: grey;
+  display: inline;
+}
+
+.writer {
+  color: #363636 !important;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.image {
+  height: 150px;
+  border-radius: 5px;
+  width: auto;
+}
+.lists {
+  margin-right: 30%;
+}
+
+/* FOOTER */
+
+footer {
+  background-color: #000;
+
+  color: white;
+  border-radius: 3px;
+  min-height: 200px;
+}
+
+.footer-about {
+  font-size: 15px;
+}
+
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  color: #bdcad8;
+}
+
+.social-buttons {
+  background-color: black;
+}
+.social-buttons:active,
+.social-buttons:hover {
+  background-color: #1d1d1d;
+}
