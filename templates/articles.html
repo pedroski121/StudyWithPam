@@ -5,17 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="#" />
-    <link href="{{url_for('static',filename='index.css')}}" rel="stylesheet" />
+    <link
+      href="{{url_for('static',filename='articles.css')}}"
+      rel="stylesheet"
+    />
     <!-- Latest compiled and minified CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
+    />
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>StudyWithPam</title>
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid ml-5">
       <!-- NAVBAR -->
       <nav class="navbar navbar-expand-sm">
         <div class="container-fluid">
@@ -40,7 +49,13 @@
                 <a href="{{url_for('story')}}" class="nav-link">Our Story</a>
               </li>
               <li class="nav-item">
-                <a href="{{url_for('login')}}" class="nav-link">Login</a>
+                <a
+                  href="{{url_for('login')}}"
+                  class="nav-link"
+                  data-bs-toggle="modal"
+                  data-bs-target="#myModal"
+                  >Login</a
+                >
               </li>
               <li class="nav-item">
                 <a href="{{url_for('articles')}}" class="nav-link">Articles</a>
@@ -53,50 +68,81 @@
         </div>
       </nav>
 
-      <!-- JUMBOTRON -->
-      <div class="row text-white rounded jumbo">
-        <div class="col-md-6 p-5">
-          <h1 class="text-dark">Study With Pam</h1>
-          <p id="jumbo_para">...to demystify medicine.</p>
+      <!-- SEARCH BAR -->
+      <form>
+        <div class="row mx-5">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control search"
+              placeholder="Search medical topics and more..."
+            />
+            <button class="btn btn-secondary" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- LATEST POST -->
+      <div class="mx-5 mt-4 text-dark shadow row lastest-post">
+        <div class="col-12 col-md-4 bg-secondary img">IMG GOES HERE</div>
+        <div class="col-12 col-md-7 content mt-sm-4">
+          <h6>Biochemistry</h6>
+          <h4>Water, the unique solvent of life</h4>
+          <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt,
+            et eaque. Velit quam dolores aperiam eveniet vitae reiciendis
+            similique?
+          </p>
+          <p><span class="bi bi-eye">10 Reads</span></p>
         </div>
       </div>
 
-      <!-- EMAIL NEWS ALERT FORM -->
-      <div class="d-flex mt-5 justify-content-center">
-        <div class="row jumboENA">
-          <div class="col-xs-12 col-md-6 text">
-            <h3>Get the latest posts</h3>
-            <p>Enter your Email address and never miss a post</p>
-          </div>
-          <div class="col-xs-12 col-md-6 formdiv">
-            <form>
-              <div class="input-group mb-3">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter your Email"
-                />
-                <button class="btn btn-primary" type="button">Register</button>
-              </div>
-            </form>
-          </div>
+      <!-- OTHER POSTS -->
+      <div class="mx-5 mt-4 row d-flex justify-content-between other-post">
+        <div class="col-12 col-sm-6 col-lg-3 post">
+          <section class="section-img">IMAGE GOES HERE</section>
+          <section class="section-content">
+            <h6>Physiology</h6>
+            <h4>The structure of the human body</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque
+              dolorum iure dolorem iste quisquam in rem ullam omnis quis
+              perferendis tenetur
+            </p>
+          </section>
+        </div>
+
+        <a
+          class="col-12 col-sm-6 col-lg-3 post"
+          href="{{url_for('article_content')}}"
+        >
+          <section class="section-img">IMAGE GOES HERE</section>
+          <section class="section-content">
+            <h6>Physiology</h6>
+            <h4>The structure of the human body</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque
+              dolorum iure dolorem iste quisquam in rem ullam omnis quis
+              perferendis tenetur
+            </p>
+          </section>
+        </a>
+        <div class="col-12 col-sm-6 col-lg-3 post">
+          <section class="section-img">IMAGE GOES HERE</section>
+
+          <section class="section-content">
+            <h6>Physiology</h6>
+            <h4>The structure of the human body</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque
+              dolorum iure dolorem iste quisquam in rem ullam omnis quis
+              perferendis tenetur
+            </p>
+          </section>
         </div>
       </div>
-      <!-- FEATURED -->
-
-      <section class="lists mt-4 ms-4">
-        <h6>This is study with pam</h6>
-        <p class="identification writer">Pedro Chinomso</p>
-        <time class="identification" datetime="28-01-2022">28-01-2022</time>
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat
-          quisquam quaerat vel, fugit doloremque cumque! Consectetur officiis
-          eveniet, incidunt enim aut, voluptas expedita exercitationem quae
-          necessitatibus laborum laudantium in fugit.
-        </p>
-      </section>
-
-      <!-- FOOTER -->
 
       <footer class="row mt-5">
         <div class="about col-md-6 mt-5 ms-4">
