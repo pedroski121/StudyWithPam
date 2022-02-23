@@ -4,62 +4,6 @@ body {
   overflow-x: hidden;
 }
 
-/* NAVBAR */
-
-/* -------------------navbar background ------------------- */
-.navbar {
-  background-color: transparent;
-}
-/* ------------------hamburger icon ---------------- */
-
-.navbar-toggler {
-  width: 47px;
-  height: 34px;
-  background-color: #bbc1cc;
-  border: none;
-}
-.navbar-toggler .line {
-  width: 100%;
-  float: left;
-  height: 2px;
-  background-color: #000;
-  margin-bottom: 5px;
-}
-.navbar-toggler:active,
-.navbar-toggler:focus {
-  outline: 0;
-  border: none;
-  cursor: pointer;
-}
-
-/* ----------------navbar company name ------------------- */
-
-.navbar-brand {
-  color: gray;
-  padding-left: 15px;
-}
-.navbar-brand:hover,
-.navbar-brand:active,
-.navbar-brand:focus {
-  color: #1e1ee9e7;
-  cursor: pointer;
-}
-
-/*-------------------Navbar Links ----------------------*/
-.nav-link {
-  color: gray;
-}
-.navbar-nav {
-  padding-right: 45px;
-}
-
-.nav-link:hover,
-.nav-link:active,
-.nav-link:focus {
-  color: #1e1ee9e7;
-  cursor: pointer;
-}
-
 /* JUMBOTRON */
 
 /* Jumbotron Header */

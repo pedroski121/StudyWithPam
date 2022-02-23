@@ -4,62 +4,6 @@
   color: black;
 }
 
-/* NAVBAR */
-
-/* -------------------navbar background ------------------- */
-.navbar {
-  background-color: transparent;
-}
-/* ------------------hamburger icon ---------------- */
-
-.navbar-toggler {
-  width: 47px;
-  height: 34px;
-  background-color: #bbc1cc;
-  border: none;
-}
-.navbar-toggler .line {
-  width: 100%;
-  float: left;
-  height: 2px;
-  background-color: #000;
-  margin-bottom: 5px;
-}
-.navbar-toggler:active,
-.navbar-toggler:focus {
-  outline: 0;
-  border: none;
-  cursor: pointer;
-}
-
-/* ----------------navbar company name ------------------- */
-
-.navbar-brand {
-  color: gray;
-  padding-left: 40px;
-}
-.navbar-brand:hover,
-.navbar-brand:active,
-.navbar-brand:focus {
-  color: #1e1ee9e7;
-  cursor: pointer;
-}
-
-/*-------------------Navbar Links ----------------------*/
-.nav-link {
-  color: gray;
-}
-.navbar-nav {
-  padding-right: 45px;
-}
-
-.nav-link:hover,
-.nav-link:active,
-.nav-link:focus {
-  color: #1e1ee9e7;
-  cursor: pointer;
-}
-
 /* FIRST BLOG POST */
 
 .lastest-post {
@@ -111,34 +55,6 @@
 }
 .section-content p {
   font-size: 13px;
-}
-
-/* FOOTER */
-
-footer {
-  background-color: #000;
-
-  color: white;
-  border-radius: 3px;
-  min-height: 200px;
-}
-
-.footer-about {
-  font-size: 15px;
-}
-
-.copyright {
-  text-align: center;
-  font-size: 12px;
-  color: #bdcad8;
-}
-
-.social-buttons {
-  background-color: black;
-}
-.social-buttons:active,
-.social-buttons:hover {
-  background-color: #1d1d1d;
 }
 
 /* MEDIA QUERIES */

@@ -29,16 +29,10 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/our-story')
-def story():
-    return 'OUR STORY'
+@app.route('/profile')
+def profile():
+    return render_template('profilepage.html')
 
 
-@app.route('/donate')
-def donate():
-    return 'Donate'
-
-
-print(__name__)
 if __name__ == '__main__':
     app.run(debug=True)
