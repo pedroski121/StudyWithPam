@@ -81,28 +81,7 @@ body {
 
 /* FOOTER */
 
-footer {
-  background-color: #000;
 
-  color: white;
-  border-radius: 3px;
-  min-height: 200px;
-}
-
-.footer-about {
-  font-size: 15px;
-}
-
-.copyright {
-  text-align: center;
-  font-size: 12px;
-  color: #bdcad8;
-}
-
-.social-buttons {
-  background-color: black;
-}
-.social-buttons:active,
-.social-buttons:hover {
-  background-color: #1d1d1d;
+.flash_message{
+  color: red;
 }

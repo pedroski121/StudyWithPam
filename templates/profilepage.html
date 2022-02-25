@@ -6,31 +6,34 @@
 />
 
 <div class="row text-white profile-header">
-  <div class="col-3 d-flex justify-content-center profile-image">
-    PROFILE IMAGE GOES HERE
+  <div class="col-3 profile-image">
+    <img src="{{url_for('get_img',id=5)}}" class="profile-picture" />
   </div>
-  <div class="col-9 profile-content">
-    <span
-      ><h4>OBI PEDRO CHINOMSO</h4>
-      <button class="btn btn-success">Follow</button></span
-    >
-    <p>Joined Feb'22</p>
-    <p>
-      <span class="follow">1.5k </span>followers
-      <span class="follow">260 </span>following
-    </p>
-    <p>
-      Hello my name is Pedro and I am a student at MOUAU studying electrical and
-      electronics engineering. I have a passion for computer programming and
-      building sophisticated systems
-    </p>
+  <div class="col-9">
+    <div class="col-md-9 profile-content">
+      <span
+        ><h4>OBI PEDRO CHINOMSO</h4>
+        <button class="btn btn-success">Follow</button></span
+      >
+      <p>Joined Feb'22</p>
+      <p>
+        <span class="follow">1.5k </span>followers
+        <span class="follow">260 </span>following
+      </p>
+      <p>
+        Hello my name is Pedro and I am a student at MOUAU studying electrical
+        and electronics engineering. I have a passion for computer programming
+        and building sophisticated systems
+      </p>
+    </div>
   </div>
 </div>
 
 <div class="content row">
-  <div class="d-flex justify-content-center col-2 profile-features">
-    <a class="create-post text-center">
-      <p>CREATE POST       <svg
+  <div class="col-2">
+    <!-- <a class="create-post text-center" href="{{url_for('post_article')}}">
+      <button class="btn btn-primary">CREATE POST    
+        <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
         height="20"
@@ -42,51 +45,83 @@
           fill-rule="evenodd"
           d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4Zm7.5.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7ZM2 5.5a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5Zm0 2a.5.5 0 0 1 .5-.5H6a.5.5 0 0 1 0 1H2.5a.5.5 0 0 1-.5-.5ZM10.5 5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3ZM13 8h-2V6h2v2Z"
         />
-      </svg></p>
-
-      
-    </a>
-  </div>
-  <div class="col-10 profile-posts"><div class="mx-5 mt-4 row d-flex justify-content-between other-post">
-    <div class="col-12 col-sm-6 col-lg-3 post">
-      <section class="section-img">IMAGE GOES HERE</section>
-      <section class="section-content">
-        <h6>Physiology</h6>
-        <h4>The structure of the human body</h4>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum
-          iure dolorem iste quisquam in rem ullam omnis quis perferendis tenetur
-        </p>
-      </section>
-    </div>
-  
-    <a
-      class="col-12 col-sm-6 col-lg-3 post"
-      href=""
+      </svg>
+    </button>
+    </a> -->
+    <a href="{{url_for('post_article')}}">
+      <button class="btn btn-primary">CREATE POST</button></a
     >
-      <section class="section-img">IMAGE GOES HERE</section>
-      <section class="section-content">
-        <h6>Physiology</h6>
-        <h4>The structure of the human body</h4>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum
-          iure dolorem iste quisquam in rem ullam omnis quis perferendis tenetur
-        </p>
-      </section>
-    </a>
-    <div class="col-12 col-sm-6 col-lg-3 post">
-      <section class="section-img">IMAGE GOES HERE</section>
-  
-      <section class="section-content">
-        <h6>Physiology</h6>
-        <h4>The structure of the human body</h4>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum
-          iure dolorem iste quisquam in rem ullam omnis quis perferendis tenetur
-        </p>
-      </section>
+
+    <button
+      class="btn btn-secondary"
+      data-bs-toggle="modal"
+      data-bs-target="#upload_modal"
+    >
+      ADD PROFILE PICTURE
+    </button>
+  </div>
+  <div class="col-10 profile-posts">
+    <div class="mx-5 mt-4 row d-flex justify-content-between other-post">
+      {% for post in posts %}
+      <a
+        class="col-12 col-sm-6 col-lg-3 post"
+        href="{{url_for('article_content', id=post.id)}}"
+      >
+        <section class="section-content">
+          <h6>{{post.course}}</h6>
+          <h4>{{post.topic}}</h4>
+          <p>{{post.body | striptags}}</p>
+        </section>
+      </a>
+      {% endfor %}
     </div>
   </div>
+</div>
+
+<!-- IMAGE UPLOAD -->
+
+<!-- LOGIN MODAL -->
+<div class="modal fade" id="upload_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Upload Display Picture</h4>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <p>Choose the picture to upload</p>
+        <form
+          action="/upload-image"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <div class="mb-3 mt-3">
+            <input
+              type="file"
+              class="custom-file-input"
+              name="image"
+              id="image"
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Upload
+          </button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+    </div>
   </div>
 </div>
 

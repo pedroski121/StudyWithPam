@@ -1,0 +1,16 @@
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{%block content%}
+{% include 'components/navbar.html' %}
+
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <h2>Create a Medical Article</h2>
+
+        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
+      </div>
+    </div>
+{%endblock%}

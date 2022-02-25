@@ -24,9 +24,9 @@
   </head>
   <body>
     <div class="container">
-      <h3 class="date">21 Feb | <span class="category">Physiology</span></h3>
+      <h3 class="date">21 Feb | <span class="category">{{post.course}}</span></h3>
       <div class="article-header">
-        <h1>The Structure of the Human Body</h1>
+        <h1>{{post.topic}}</h1>
         <div class="writer">
           <div class="dp"></div>
           <p>
@@ -38,56 +38,7 @@
       <hr />
 
       <div class="content">
-        <p>
-          Water, we drink water everyday. We bathe with water everyday, we use
-          water to do our laundries, and our dish washing. Basically 98% of
-          everything in this life requires water. From our secondary school, we
-          only know water to be H2O and just that only. Well, from this point
-          henceforth, you’d be looking at water differently, you’d stop seeing
-          it as just some liquid used in washing, for drinking etc, you’d be
-          seeing water from the BIOCHEMICAL view and that mates, it’s for the
-          best. Shall we begin, comrades? BIOCHEMISTRY OF WATER. Water, a
-          biogenic compound, whose molecular formula is H20, is generally
-          referred to as the solvent of life, why? Let’s look at the few points
-          why it’s referred to as such All organisms are composed primarily of
-          water, such that most eukaryotic organisms are about 90 percent water,
-          while prokaryotes are about 70 percent water. No organism, not even
-          the prokaryotes, can develop and grow without water. All chemical
-          reactions in organisms occur in liquid water. Being polar, water has
-          unique properties. These include its role as a solvent, as a chemical
-          reactant, and as a factor to maintain a fairly constant temperature.
-          Before we continue, let’s look at some of the biological functions of
-          water in the human body. BIOLOGICAL FUNCTIONS OF WATER Water in the
-          human body, helps in transport, how? It helps in transporting oxygen
-          and other nutrients in the body. It serves as lubricant of the joints,
-          yes! Water is the major lubricant in the synovial fluid of joints.
-          Without water, many biochemical reactions or processes won’t take
-          place in the body. What I’m basically saying is; water serves as a
-          substrate for biochemical reactions. These are but few biological
-          functions of water. Remember, I wrote that the molecular formula for
-          water is H20, yep, that means, it has 2 hydrogen atoms and 1 one
-          oxygen atom. Let’s now look at the electronic structure of water.
-          ELECTRONIC STRUCTURE OF WATER A molecule of water is composed of two
-          atoms of hydrogen and one atom of oxygen. The one and only electron
-          ring around the nucleus of each hydrogen atom has only one electron.
-          The negative charge of the electron is balanced by the positive charge
-          of one proton in the hydrogen nucleus. The electron ring of hydrogen
-          would actually prefer to possess two electrons to create a stable
-          configuration. Oxygen, on the other hand, has two electron rings with
-          an inner ring having 2 electrons, which is cool because that is a
-          stable configuration. The outer ring, on the other hand, has 6
-          electrons but it would like to have 2 more because, in the second
-          electron ring, 8 electrons is the stable configuration. To balance the
-          negative charge of 8 (2+6) electrons, the oxygen nucleus has 8
-          protons. Hydrogen and oxygen would like to have stable electron
-          configurations but do not as individual atoms. They can get out of
-          this predicament if they agree to share electrons (a sort of an energy
-          “treaty”). So, oxygen shares one of its outer electrons with each of
-          two hydrogen atoms, and each of the two hydrogen atoms shares it’s one
-          and only electron with oxygen. This is called a covalent bond. Each
-          hydrogen atom thinks it has two electrons, and the oxygen atom thinks
-          that it has 8 outer electrons. Everybody’s happy, no?
-        </p>
+       <p> {{post.body | striptags}}</p>
       </div>
     </div>
   </body>
