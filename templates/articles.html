@@ -19,54 +19,31 @@
 
 <!-- LATEST POST -->
 <div class="mx-5 mt-4 text-dark shadow row lastest-post">
-  <div class="col-12 col-md-4 bg-secondary img">IMG GOES HERE</div>
-  <div class="col-12 col-md-7 content mt-sm-4">
+  <div class="col-12 content mt-sm-4">
     <h6>Biochemistry</h6>
     <h4>Water, the unique solvent of life</h4>
     <p>
       Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt, et
       eaque. Velit quam dolores aperiam eveniet vitae reiciendis similique?
     </p>
-    <p><span class="bi bi-eye">10 Reads</span></p>
   </div>
 </div>
 
 <!-- OTHER POSTS -->
+
 <div class="mx-5 mt-4 row d-flex justify-content-between other-post">
-  <div class="col-12 col-sm-6 col-lg-3 post">
-    <section class="section-img">IMAGE GOES HERE</section>
+  {% for post in posts %}
+  <a
+    class="col-12 col-sm-6 col-lg-3 post"
+    href="{{url_for('article_content', id=post.id)}}"
+  >
     <section class="section-content">
-      <h6>Physiology</h6>
-      <h4>The structure of the human body</h4>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum
-        iure dolorem iste quisquam in rem ullam omnis quis perferendis tenetur
-      </p>
+      <h6>{{post.course}}</h6>
+      <h4>{{post.topic}}</h4>
+      <p>{{post.body[0:350] | striptags}}</p>
     </section>
-  </div>
-
-  <a class="col-12 col-sm-6 col-lg-3 post">
-    <section class="section-img">IMAGE GOES HERE</section>
-    <section class="section-content">
-      <h6>Physiology</h6>
-      <h4>The structure of the human body</h4>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum
-        iure dolorem iste quisquam in rem ullam omnis quis perferendis tenetur
-      </p>
-    </section>
+    <p>Likes | Comments</p>
   </a>
-  <div class="col-12 col-sm-6 col-lg-3 post">
-    <section class="section-img">IMAGE GOES HERE</section>
-
-    <section class="section-content">
-      <h6>Physiology</h6>
-      <h4>The structure of the human body</h4>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque dolorum
-        iure dolorem iste quisquam in rem ullam omnis quis perferendis tenetur
-      </p>
-    </section>
-  </div>
+  {% endfor %}
 </div>
 {%include "components/footer.html"%}

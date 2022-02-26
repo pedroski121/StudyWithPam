@@ -1,6 +1,7 @@
 # EMAIL MODEL
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from  flask_login import UserMixin
 
 
 app = Flask(__name__)
@@ -17,11 +18,24 @@ class Email(db.Model):
     email = db.Column(db.String, unique=True)
 
 
+
+class User(UserMixin,db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    username = db.Column(db.String, unique=True)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    profile_description = db.Column(db.String)
+    followers = db.Column(db.Integer)
+    following = db.Column(db.Integer)
+    creation_date = db.Column(db.String)
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course = db.Column(db.String)
     topic = db.Column(db.String)
-    body= db.Column(db.String)
+    body = db.Column(db.String)
+
 
 
 

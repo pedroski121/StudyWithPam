@@ -45,20 +45,30 @@
               <li class="nav-item">
                 <a href="{{url_for('home')}}" class="nav-link">Home</a>
               </li>
+              {% if not user_status: %}
+
               <li class="nav-item">
                 <a
-                  href="{{url_for('login')}}"
                   class="nav-link"
                   data-bs-toggle="modal"
                   data-bs-target="#myModal"
                   >Login</a
                 >
               </li>
+              {% else %}
+              <li class="nav-item">
+                <a href="{{url_for('logout')}}" class="nav-link">Logout</a>
+              </li>
+              {% endif %}
               <li class="nav-item">
                 <a href="{{url_for('articles')}}" class="nav-link">Articles</a>
               </li>
               <li class="nav-item">
-                <a href="{{url_for('profile')}}" class="nav-link">Profile</a>
+                <a
+                  href="{{url_for('profile', username='peddymN')}}"
+                  class="nav-link"
+                  >Profile</a
+                >
               </li>
             </ul>
           </div>
@@ -82,7 +92,7 @@
             <!-- Modal body -->
             <div class="modal-body">
               <p>Enter your credentials to access your account</p>
-              <form>
+              <form action="{{url_for('login')}}" method="POST">
                 <div class="mb-3 mt-3">
                   <label for="email" class="form-label">Email:</label>
                   <input
@@ -103,13 +113,7 @@
                     name="pswd"
                   />
                 </div>
-                <button
-                  type="submit"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Login
-                </button>
+                <button type="submit" class="btn btn-secondary">Login</button>
               </form>
             </div>
 
@@ -146,42 +150,45 @@
             <!-- Modal body -->
             <div class="modal-body">
               <p>Enter your credentials to create an account</p>
-              <form>
-                <div class="mb-3 mt-3">
-                  <label for="name" class="form-label">Name:</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    placeholder="Enter your name"
-                    name="name"
-                  />
-                </div>
-                <div class="mb-3 mt-3">
-                  <label for="email" class="form-label">Email:</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    placeholder="Enter email"
-                    name="email"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="pwd" class="form-label">Password:</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="pwd"
-                    placeholder="Enter password"
-                    name="pswd"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
+              <form action="/register" method="post">
+                <label for="username" class="form-label">Username:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  placeholder="Enter your username"
+                  name="username"
+                  required
+                />
+
+                <label for="name" class="form-label">Name:</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  placeholder="Enter your name"
+                  name="name"
+                  required
+                />
+                <label for="email" class="form-label">Email:</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter email"
+                  name="email"
+                  required
+                />
+                <label for="pwd" class="form-label">Password:</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="pwd"
+                  placeholder="Enter password"
+                  name="pswd"
+                  required
+                />
+                <button type="submit" class="btn btn-secondary">
                   Register
                 </button>
               </form>

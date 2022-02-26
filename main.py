@@ -1,11 +1,19 @@
 from flask import Response, redirect, render_template, request, flash, url_for
 from sqlalchemy import exc
-from model import app, db, Image, Email, Post
+from model import app, db, Image, Email, Post, User
 # For ensuring the file uploaded is not dangerous
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 from form import PostForm
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
+import random
+from datetime import date
+from flask_login import login_user, LoginManager, login_required, current_user, logout_user
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 Bootstrap(app)
 app.config['CKEDITOR_PKG_TYPE'] = 'basic'
@@ -37,6 +45,16 @@ def error413(e):
     return "THE FILE SIZE IS TOO LARGE"
 
 
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(id)
+
+
+@app.context_processor
+def inject_user():
+    return dict(user_status=current_user.is_authenticated)
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -44,7 +62,9 @@ def home():
 
 @app.route('/articles')
 def articles():
-    return render_template('articles.html')
+    all_post = db.session.query(Post).all()
+    random.shuffle(all_post)
+    return render_template('articles.html', posts=all_post)
 
 
 @app.route('/article-content/<id>')
@@ -53,20 +73,63 @@ def article_content(id):
     return render_template('article-content.html', post=post)
 
 
-@app.route('/login')
+@app.route('/login', methods=['POST'])
 def login():
-    return render_template('login.html')
+    email = request.form['email']
+    password = request.form['pswd']
+    user = User.query.filter_by(email=email).first()
+    if user:
+        if check_password_hash(pwhash=user.password, password=password):
+            print('password is correct')
+            login_user(user)
+            return redirect(url_for('profile', username=user.username))
+        return "Your password is incorrect"
+    return 'Your email address does not exist'
 
 
-@app.route('/register')
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route('/register', methods=['POST'])
 def register():
-    return render_template('register.html')
+    name = request.form["name"]
+    email = request.form['email']
+    password = request.form['pswd']
+    password_hashed = generate_password_hash(
+        password=password, method='pbkdf2:sha256', salt_length=8)
+    username = request.form['username']
+    today = date.today().strftime("%b %d, %Y")
+    try:
+        new_user = User(name=name, email=email,
+                        password=password_hashed, username=username, followers=0, following=0, creation_date=today)
+        db.session.add(new_user)
+        db.session.commit()
+    except exc.IntegrityError:
+        return 'It seems like your email or username already exists'
+    else:
+        login_user(new_user)
+    return redirect(url_for('profile', username=username))
+
+# PROFILE PAGE
 
 
-@app.route('/profile')
-def profile():
+@app.route('/profile/<username>')
+@login_required
+def profile(username):
     all_user_post = db.session.query(Post).all()
-    return render_template('profilepage.html', posts=all_user_post)
+    user = User.query.filter_by(username=username).first()
+    user_data = dict(
+        name=user.name.title(),
+        user_name=user.username,
+        followers=user.followers,
+        following=user.following,
+        creation_date=user.creation_date,
+        profile_description=user.profile_description)
+    return render_template('profilepage.html', posts=all_user_post[::-1], user=user_data)
 
 
 @app.route('/post-article', methods=['GET', 'POST'])
@@ -81,6 +144,8 @@ def post_article():
         db.session.commit()
         return redirect(url_for('profile'))
     return render_template('post-article.html', form=form)
+
+# SIGN UP FOR NEWS LETTER ROUTE
 
 
 @app.route('/email-registration', methods=['GET', 'POST'])
@@ -114,36 +179,9 @@ def upload_image():
                             mimetype=mimetype, name=filename)
                 db.session.add(img)
                 db.session.commit()
-                return redirect(url_for('get_img',id=7))
+                return redirect(url_for('get_img', id=7))
             else:
                 return "Bad Upload", 400
-
-
-# @app.route('/get-image/<int:id>')
-# def get_img(id):
-#     img = Image.query.filter_by(id=id).first()
-#     if not img:
-#         return 'Img Not Found!', 404
-#     return Response(img.img, mimetype=img.mimetype)
-
-
-# def upload_image():
-#     if request.method == "POST":
-#         pic = request.files['image']
-#         if not pic:
-#             return 'No pic uploaded!', 400
-
-#         filename = secure_filename(pic.filename)
-#         mimetype = pic.mimetype
-#         if not filename or not mimetype:
-#             return 'Bad upload!', 400
-
-#         img = Image(img=pic.read(), name=filename, mimetype=mimetype)
-#         db.session.add(img)
-#         db.session.commit()
-
-#         return 'Img Uploaded!', 200
-#     return render_template('upload_image.html')
 
 
 @app.route("/get-image/<int:id>")

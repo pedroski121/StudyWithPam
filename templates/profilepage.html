@@ -12,19 +12,19 @@
   <div class="col-9">
     <div class="col-md-9 profile-content">
       <span
-        ><h4>OBI PEDRO CHINOMSO</h4>
+        ><h4>{{user.name}}</h4>
         <button class="btn btn-success">Follow</button></span
       >
-      <p>Joined Feb'22</p>
+      <p>Joined {{user.creation_date}}</p>
       <p>
-        <span class="follow">1.5k </span>followers
-        <span class="follow">260 </span>following
+        <span class="follow">{{user.followers}} </span>followers
+        <span class="follow">{{user.following}} </span>following
       </p>
-      <p>
-        Hello my name is Pedro and I am a student at MOUAU studying electrical
-        and electronics engineering. I have a passion for computer programming
-        and building sophisticated systems
-      </p>
+      {%if user.profile_description%}
+      <p>{{user.profile_description}}</p>
+      {% else %}
+      <p>Welcome to my SWP profile page</p>
+      {% endif %}
     </div>
   </div>
 </div>
@@ -70,7 +70,7 @@
         <section class="section-content">
           <h6>{{post.course}}</h6>
           <h4>{{post.topic}}</h4>
-          <p>{{post.body | striptags}}</p>
+          <p>{{post.body[0:350] | striptags}}</p>
         </section>
       </a>
       {% endfor %}
