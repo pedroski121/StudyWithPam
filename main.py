@@ -1,4 +1,4 @@
-from flask import Response, redirect, render_template, request, flash, url_for
+from flask import Response, redirect, render_template, request, flash, url_for, send_file
 from sqlalchemy import exc
 from model import app, db, Image, Email, Post, User
 # For ensuring the file uploaded is not dangerous
@@ -52,7 +52,7 @@ def load_user(id):
 
 @app.context_processor
 def inject_user():
-    return dict(user_status=current_user.is_authenticated)
+    return dict(user_status=current_user.is_authenticated, id=current_user.get_id())
 
 
 @app.route('/')
@@ -82,7 +82,7 @@ def login():
         if check_password_hash(pwhash=user.password, password=password):
             print('password is correct')
             login_user(user)
-            return redirect(url_for('profile', username=user.username))
+            return redirect(url_for('profile', user_id=user.id))
         return "Your password is incorrect"
     return 'Your email address does not exist'
 
@@ -103,25 +103,30 @@ def register():
         password=password, method='pbkdf2:sha256', salt_length=8)
     username = request.form['username']
     today = date.today().strftime("%b %d, %Y")
+    new_user = User(name=name, email=email,
+                    password=password_hashed,
+                    username=username,
+                    followers=0,
+                    following=0,
+                    creation_date=today,
+                    profile_description='Welcome to my SWP page')
     try:
-        new_user = User(name=name, email=email,
-                        password=password_hashed, username=username, followers=0, following=0, creation_date=today)
         db.session.add(new_user)
         db.session.commit()
     except exc.IntegrityError:
         return 'It seems like your email or username already exists'
     else:
         login_user(new_user)
-    return redirect(url_for('profile', username=username))
+    return redirect(url_for('profile', user_id=new_user.id))
 
 # PROFILE PAGE
 
 
-@app.route('/profile/<username>')
+@app.route('/profile/<user_id>')
 @login_required
-def profile(username):
+def profile(user_id):
     all_user_post = db.session.query(Post).all()
-    user = User.query.filter_by(username=username).first()
+    user = User.query.filter_by(id=user_id).first()
     user_data = dict(
         name=user.name.title(),
         user_name=user.username,
@@ -145,9 +150,8 @@ def post_article():
         return redirect(url_for('profile'))
     return render_template('post-article.html', form=form)
 
+
 # SIGN UP FOR NEWS LETTER ROUTE
-
-
 @app.route('/email-registration', methods=['GET', 'POST'])
 def email_registration():
     if request.method == "POST":
@@ -161,12 +165,12 @@ def email_registration():
     return redirect(url_for('home'))
 
 
-@app.route("/upload-image", methods=["POST"])
-def upload_image():
+@app.route("/upload-image/<id>", methods=["POST"])
+def upload_image(id):
+    user_profile = User.query.get(id)
     if request.files:
         image = request.files['image']
         # TO ENSURE THE FILE UPLOADED HAS A NAME
-        print(image.filename)
         if image.filename == "":
             return "No filename"
         if allowed_image(image.filename):
@@ -174,22 +178,53 @@ def upload_image():
             filename = secure_filename(image.filename)
             mimetype = image.mimetype
             # Add Image to database
+
             if filename or mimetype:
-                img = Image(img=image.read(),
-                            mimetype=mimetype, name=filename)
-                db.session.add(img)
-                db.session.commit()
-                return redirect(url_for('get_img', id=7))
+
+                query_id = Image.query.filter_by(user_id=id).first()
+                if query_id:
+                    print('FOUND')
+                    query_id.mimetype = mimetype
+                    query_id.name = filename
+                    query_id.img = image.read()
+                    query_id.user = user_profile
+                    db.session.commit()
+                    return redirect(url_for('get_img', id=id))
+
+                else:
+                    img = Image(img=image.read(),
+                                mimetype=mimetype, name=filename, user=user_profile)
+                    db.session.add(img)
+                    db.session.commit()
+                    return redirect(url_for('get_img', id=id))
             else:
                 return "Bad Upload", 400
+        else:
+            return "Bad Upload", 400
 
 
 @app.route("/get-image/<int:id>")
 def get_img(id):
-    image = Image.query.get(id)
+    image = Image.query.filter_by(user_id=id).first()
     if not image:
         return "Image cannot be found", 404
     return Response(image.img, mimetype=image.mimetype)
+
+
+@app.route('/description/<user_id>', methods=['GET', 'POST'])
+@login_required
+def description(user_id):
+    user_description = User.query.get(user_id)
+    if request.method == 'POST':
+        new_description = request.form['description']
+        user_description.profile_description = new_description
+        db.session.commit()
+        print('updated')
+        return redirect(url_for('profile', user_id=user_id))
+    if user_description.profile_description:
+        return render_template('description.html', current_description=user_description.profile_description)
+    else:
+        return render_template('description.html', current_description='Welcome to my SWP page')
 
 
 if __name__ == '__main__':

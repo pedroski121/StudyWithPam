@@ -1,0 +1,20 @@
+{% block content %} {% include 'components/navbar.html'%}
+
+<textarea
+  form="description_form"
+  name="description"
+  maxlength="300"
+  id="description"
+  placeholder="Your profile description"
+>
+{{current_description}}</textarea
+>
+<form
+  action="{{url_for('description',user_id = id)}}"
+  method="POST"
+  id="description_form"
+>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{%endblock%}

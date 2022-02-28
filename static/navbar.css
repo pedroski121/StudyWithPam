@@ -53,3 +53,9 @@
   color: black !important;
   cursor: pointer;
 }
+
+/* FROM DESCRIPTION.HTML */
+#description {
+  width: 100%;
+  height: 200px;
+}

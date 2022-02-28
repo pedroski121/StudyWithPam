@@ -7,7 +7,7 @@
 
 <div class="row text-white profile-header">
   <div class="col-3 profile-image">
-    <img src="{{url_for('get_img',id=5)}}" class="profile-picture" />
+    <img src="{{url_for('get_img',id=id)}}" class="profile-picture" />
   </div>
   <div class="col-9">
     <div class="col-md-9 profile-content">
@@ -49,7 +49,7 @@
     </button>
     </a> -->
     <a href="{{url_for('post_article')}}">
-      <button class="btn btn-primary">CREATE POST</button></a
+      <button class="btn btn-primary">CREATE ARTICLE</button></a
     >
 
     <button
@@ -57,8 +57,11 @@
       data-bs-toggle="modal"
       data-bs-target="#upload_modal"
     >
-      ADD PROFILE PICTURE
+      UPDATE PROFILE PICTURE
     </button>
+    <a href="{{url_for('description',user_id=id)}}"
+      ><button class="btn btn-success">UPDATE PROFILE DESCRIPTION</button></a
+    >
   </div>
   <div class="col-10 profile-posts">
     <div class="mx-5 mt-4 row d-flex justify-content-between other-post">
@@ -98,7 +101,7 @@
       <div class="modal-body">
         <p>Choose the picture to upload</p>
         <form
-          action="/upload-image"
+          action="{{url_for('upload_image',id=id)}}"
           method="POST"
           enctype="multipart/form-data"
         >
