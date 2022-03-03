@@ -14,7 +14,10 @@ body {
 }
 
 #author-name {
-  color: black;
+  color: #3a3232;
+}
+.author_tag {
+  text-decoration: none;
 }
 div p {
   color: gray;
@@ -41,4 +44,28 @@ div p {
 }
 .content p {
   color: black;
+}
+
+footer {
+  margin-top: 100px;
+}
+
+.comment {
+  width: 80%;
+  height: 100px;
+  margin-left: 40px;
+}
+
+.comment_texts {
+  margin-left: 50px;
+  margin-top: 40px;
+}
+.comment_header {
+  color: black !important;
+}
+.comment_author {
+  font-weight: bold;
+}
+.comment_date {
+  font-size: 12px;
 }

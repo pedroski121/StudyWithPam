@@ -65,6 +65,11 @@
   font-size: 13px;
 }
 
+.page_numbering {
+  margin-left: 45%;
+  margin-top: 15px;
+}
+
 /* MEDIA QUERIES */
 
 @media only screen and (max-width: 800px) {

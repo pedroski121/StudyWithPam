@@ -1,13 +1,12 @@
-from flask import Response, redirect, render_template, request, flash, url_for, send_file
+from flask import Response, redirect, render_template, request, flash, url_for
 from sqlalchemy import exc
-from model import app, db, Image, Email, Post, User
+from model import app, db, Image, Email, Post, User, Comments
 # For ensuring the file uploaded is not dangerous
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from form import PostForm
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
-import random
 from datetime import date
 from flask_login import login_user, LoginManager, login_required, current_user, logout_user
 
@@ -62,15 +61,45 @@ def home():
 
 @app.route('/articles')
 def articles():
-    all_post = db.session.query(Post).all()
-    random.shuffle(all_post)
-    return render_template('articles.html', posts=all_post)
+    page = request.args.get('page', 1, type=int)
+    # all_post_paginate = db.session.query.order_by(Post.id.desc())
+    all_articles = Post.query.order_by(
+        Post.id.desc()).paginate(page=page, per_page=6)
+    return render_template('articles.html', posts=all_articles)
+
+
+@app.route('/delete-article/<article_id>')
+@login_required
+def delete_article(article_id):
+    article = Post.query.get(article_id)
+    current_user_id = int(current_user.get_id())
+    article_id = article.author_id
+
+    if article_id == current_user_id:
+        db.session.delete(article)
+        db.session.commit()
+        return redirect(url_for('profile', user_id=current_user_id))
+    else:
+        return 'Not authorized'
 
 
 @app.route('/article-content/<id>')
 def article_content(id):
     post = Post.query.get(id)
-    return render_template('article-content.html', post=post)
+    comments = Comments.query.filter_by(post_id=id).all()
+    comment_data = []
+    for comment in comments:
+        text = comment.comment
+        date = comment.date
+        author_id = comment.comment_author_id
+        user_name = User.query.get(author_id).name.title()
+        comment_data.append({
+            "comment_text": text,
+            "comment_date": date,
+            "comment_author": user_name,
+            "comment_date": date
+        })
+    return render_template('article-content.html', post=post, comments=comment_data)
 
 
 @app.route('/login', methods=['POST'])
@@ -106,8 +135,6 @@ def register():
     new_user = User(name=name, email=email,
                     password=password_hashed,
                     username=username,
-                    followers=0,
-                    following=0,
                     creation_date=today,
                     profile_description='Welcome to my SWP page')
     try:
@@ -115,39 +142,42 @@ def register():
         db.session.commit()
     except exc.IntegrityError:
         return 'It seems like your email or username already exists'
-    else:
+    finally:
         login_user(new_user)
+        print(new_user.id)
     return redirect(url_for('profile', user_id=new_user.id))
 
 # PROFILE PAGE
 
 
 @app.route('/profile/<user_id>')
-@login_required
 def profile(user_id):
-    all_user_post = db.session.query(Post).all()
+    page = request.args.get('page', 1, type=int)
+    all_user_post = Post.query.filter_by(
+        author_id=user_id).order_by(Post.id.desc()).paginate(page=page, per_page=6)
     user = User.query.filter_by(id=user_id).first()
     user_data = dict(
         name=user.name.title(),
         user_name=user.username,
-        followers=user.followers,
-        following=user.following,
         creation_date=user.creation_date,
         profile_description=user.profile_description)
-    return render_template('profilepage.html', posts=all_user_post[::-1], user=user_data)
+    return render_template('profilepage.html', posts=all_user_post, user=user_data, user_id=user_id)
 
 
-@app.route('/post-article', methods=['GET', 'POST'])
-def post_article():
+@app.route('/post-article/<user_id>', methods=['GET', 'POST'])
+def post_article(user_id):
+    author = User.query.get(user_id)
     form = PostForm()
     if form.validate_on_submit():
         course = form.course.data
         topic = form.topic.data
         body = form.body.data
-        post_writeup = Post(course=course, topic=topic, body=body)
+        today = date.today().strftime("%b %d, %Y")
+        post_writeup = Post(course=course, topic=topic,
+                            body=body, date=today, author=author)
         db.session.add(post_writeup)
         db.session.commit()
-        return redirect(url_for('profile'))
+        return redirect(url_for('profile', user_id=user_id))
     return render_template('post-article.html', form=form)
 
 
@@ -165,42 +195,44 @@ def email_registration():
     return redirect(url_for('home'))
 
 
-@app.route("/upload-image/<id>", methods=["POST"])
-def upload_image(id):
-    user_profile = User.query.get(id)
-    if request.files:
-        image = request.files['image']
-        # TO ENSURE THE FILE UPLOADED HAS A NAME
-        if image.filename == "":
-            return "No filename"
-        if allowed_image(image.filename):
-            # Image is suitable for further processing
-            filename = secure_filename(image.filename)
-            mimetype = image.mimetype
-            # Add Image to database
+@app.route("/upload-image/<user_id>", methods=['GET', "POST"])
+@login_required
+def upload_image(user_id):
+    if request.method == 'POST':
+        user_profile = User.query.get(user_id)
+        if request.files:
+            image = request.files['image']
+            # TO ENSURE THE FILE UPLOADED HAS A NAME
+            if image.filename == "":
+                return "No filename"
+            elif allowed_image(image.filename):
+                # Image is suitable for further processing
+                filename = secure_filename(image.filename)
+                mimetype = image.mimetype
+                # Add Image to database
 
-            if filename or mimetype:
+                if filename or mimetype:
 
-                query_id = Image.query.filter_by(user_id=id).first()
-                if query_id:
-                    print('FOUND')
-                    query_id.mimetype = mimetype
-                    query_id.name = filename
-                    query_id.img = image.read()
-                    query_id.user = user_profile
-                    db.session.commit()
-                    return redirect(url_for('get_img', id=id))
+                    query_id = Image.query.filter_by(user_id=user_id).first()
+                    if query_id:
+                        query_id.mimetype = mimetype
+                        query_id.name = filename
+                        query_id.img = image.read()
+                        query_id.user = user_profile
+                        db.session.commit()
+                        return redirect(url_for('get_img', id=user_id))
 
+                    else:
+                        img = Image(img=image.read(),
+                                    mimetype=mimetype, name=filename, user=user_profile)
+                        db.session.add(img)
+                        db.session.commit()
+                        return redirect(url_for('get_img', id=user_id))
                 else:
-                    img = Image(img=image.read(),
-                                mimetype=mimetype, name=filename, user=user_profile)
-                    db.session.add(img)
-                    db.session.commit()
-                    return redirect(url_for('get_img', id=id))
+                    return "Bad Upload", 400
             else:
                 return "Bad Upload", 400
-        else:
-            return "Bad Upload", 400
+    return render_template('upload_image.html')
 
 
 @app.route("/get-image/<int:id>")
@@ -219,12 +251,23 @@ def description(user_id):
         new_description = request.form['description']
         user_description.profile_description = new_description
         db.session.commit()
-        print('updated')
         return redirect(url_for('profile', user_id=user_id))
     if user_description.profile_description:
         return render_template('description.html', current_description=user_description.profile_description)
     else:
         return render_template('description.html', current_description='Welcome to my SWP page')
+
+
+@app.route('/comment/<post_id>', methods=['POST'])
+@login_required
+def comment(post_id):
+    comment_text = request.form['comment']
+    today = date.today().strftime("%b %d, %Y")
+    comment = Comments(comment=comment_text, comment_author_id=current_user.get_id(
+    ), post_id=post_id, date=today)
+    db.session.add(comment)
+    db.session.commit()
+    return redirect(url_for('article_content', id=post_id))
 
 
 if __name__ == '__main__':

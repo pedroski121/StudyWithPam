@@ -24,22 +24,55 @@
   </head>
   <body>
     <div class="container">
-      <h3 class="date">21 Feb | <span class="category">{{post.course}}</span></h3>
+      <h3 class="date">
+        {{post.date}} | <span class="category">{{post.course}}</span>
+      </h3>
       <div class="article-header">
         <h1>{{post.topic}}</h1>
         <div class="writer">
-          <div class="dp"></div>
           <p>
             Author<br />
-            <span id="author-name">Ezinne Ihendinihu</span>
+            <a
+              href="{{url_for('profile',user_id=post.author.id)}}"
+              class="author_tag"
+              ><span id="author-name">{{post.author.name}}</span></a
+            >
           </p>
         </div>
       </div>
       <hr />
 
       <div class="content">
-       <p> {{post.body | striptags}}</p>
+        <p>{{post.body | safe}}</p>
       </div>
     </div>
   </body>
+  <footer>
+    <h3>Comments</h3>
+    <div class="comment_texts">
+      {%for comment in comments %}
+      <h6 class="comment_header">
+        <span class="comment_author">{{comment['comment_author']}}</span> |
+        <span class="comment_date"> {{comment['comment_date']}}</span>
+      </h6>
+      <p class=".comment_text">{{comment['comment_text']}}</p>
+      {% endfor %}
+    </div>
+    <textarea
+      form="comment_form"
+      name="comment"
+      class="comment"
+      placeholder="Add Comment"
+    >
+    </textarea>
+
+    <form
+      action="/comment/{{post.id}}"
+      method="post"
+      id="comment_form"
+      class="comment"
+    >
+      <button type="submit" class="btn btn-primary">Comment</button>
+    </form>
+  </footer>
 </html>

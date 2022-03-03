@@ -2,7 +2,7 @@
 <link href="{{url_for('static',filename='articles.css')}}" rel="stylesheet" />
 
 <!-- SEARCH BAR -->
-<form>
+<!-- <form>
   <div class="row mx-5">
     <div class="input-group mb-3">
       <input
@@ -15,24 +15,12 @@
       </button>
     </div>
   </div>
-</form>
-
-<!-- LATEST POST -->
-<div class="mx-5 mt-4 text-dark shadow row lastest-post">
-  <div class="col-12 content mt-sm-4">
-    <h6>Biochemistry</h6>
-    <h4>Water, the unique solvent of life</h4>
-    <p>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt, et
-      eaque. Velit quam dolores aperiam eveniet vitae reiciendis similique?
-    </p>
-  </div>
-</div>
+</form> -->
 
 <!-- OTHER POSTS -->
 
 <div class="mx-5 mt-4 row d-flex justify-content-between other-post">
-  {% for post in posts %}
+  {% for post in posts.items %}
   <a
     class="col-12 col-sm-6 col-lg-3 post"
     href="{{url_for('article_content', id=post.id)}}"
@@ -42,8 +30,23 @@
       <h4>{{post.topic}}</h4>
       <p>{{post.body[0:350] | striptags}}</p>
     </section>
-    <p>Likes | Comments</p>
   </a>
   {% endfor %}
+</div>
+<div class="page_numbering">
+  {%for page_num in
+  posts.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2)%}
+  {%if page_num%} {% if posts.page == page_num%}
+  <a class="btn btn-dark mb-4" href="{{url_for('articles',page=page_num)}}">
+    {{page_num}}
+  </a>
+  {%else%}
+  <a
+    class="btn btn-outline-dark mb-4"
+    href="{{url_for('articles',page=page_num)}}"
+  >
+    {{page_num}}
+  </a>
+  {%endif%} {%else%} ... {%endif%} {%endfor%}
 </div>
 {%include "components/footer.html"%}
