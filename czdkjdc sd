@@ -1,0 +1,47 @@
+[33mcommit c6c786ffec624da2c6e3c535640d1d67fea2ef36[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Thu Mar 3 02:30:46 2022 +0100
+
+    SWP version 1.0.0
+
+[33mcommit d4ac7ab5b95eca05605d08cc2381cab3939ff5da[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Mon Feb 28 02:23:13 2022 +0100
+
+    Add and Update profile picture
+
+[33mcommit 4551cf0a9c7313fd45e8f1ff281c547a2f398b1f[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Sat Feb 26 23:32:47 2022 +0100
+
+    authentification complete
+
+[33mcommit 67f463418c30b4bcab149acb8d8db8f06a6dc33e[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Sat Feb 26 00:22:27 2022 +0100
+
+    write and post article
+
+[33mcommit 428f9c72ef6f49af30d7e748180b9fe970e3b6f8[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Wed Feb 23 21:08:27 2022 +0100
+
+    login and registration modal update profile page complete
+
+[33mcommit 95de4fa626c80c6fc5e37f3985f2f70cdb5b503f[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Tue Feb 22 00:10:02 2022 +0100
+
+    Articles, login and registeration pages design
+
+[33mcommit ecdc68ce2f974c4b11bd75dd49c593ab5a0e003e[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Mon Feb 21 13:17:22 2022 +0100
+
+    Indexpage complete
+
+[33mcommit a3f27b5def2971b2f08b76d775b7cca307792c0d[m
+Author: pedroski121 <obipedro121@gmail.com>
+Date:   Mon Feb 21 12:24:20 2022 +0100
+
+    Initial Setup
